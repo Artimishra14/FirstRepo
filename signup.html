@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LEKHANI - Sign Up with Storage</title>
+    <style>
+        body{
+            font-family: 'Orbitron', sans-serif;
+            background: linear-gradient(135deg, rgb(241, 131, 162),rgb(229, 83, 110),rgb(216, 0, 62)); 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .box{
+            font-family: 'Orbitron', sans-serif;
+            width: 700px;
+            height: 650px;
+            background-color: white;
+            border-radius:20px;
+            text-align: center;
+            justify-content: center;
+            align-items: center;
+            display: flex;
+            flex-direction: column;
+        }
+        h1{
+            font-family: monospace;
+            font-style: bold;
+            font-size: 50px;
+            color:rgb(219, 18, 85);
+        }
+        .textarea{
+            width: 80%;
+            height: 70px;
+            border-radius: 10px;
+            border: 1px solid rgb(219, 18, 85);
+            padding: 5px;
+            margin-top: 10px;
+            font-size: 20px;
+        }
+        #hn{
+            font-size:30px;
+            font-family: 'Orbitron', sans-serif;
+            width: 60%;
+            height: 80px;
+            border-radius: 10px;
+            border: 1px solid rgb(219, 18, 85);
+            background-color: rgb(219, 18, 85);
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            margin:30px;
+        }
+        #hn:hover{
+            background-color: rgb(132, 6, 48);
+            color: white;
+            transition: 0.3s;
+        }
+        p{
+            margin-left:-480px;
+            margin-top:50px;
+            font-size:20px;
+            font-family:system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            color: rgb(219, 18, 85);
+        }
+        .message {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .success { color: green; }
+        .error { color: red; }
+        
+        .demo-section {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #f0f0f0;
+            border-radius: 10px;
+            width: 80%;
+        }
+        .user-list {
+            text-align: left;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        .refer{
+            position: relative;/*relative means jis bhi container ke andar h ye element uske comparison me. Is case me body ke andar h to body me position change hogi
+      mtlb jis v tag ke andar h uske relatively iska position set hoga. absolute means full page ke comparison me
+      brush ko black kr de ya rhne de pink he blue kr do 
+      */
+      right: -600px;
+      background-color: white;
+      height: 50px;
+      width: 150px;
+      color:rgb(216, 0, 62);
+      font-size: 16px;
+      font-weight: bold;
+      border-radius:10px;
+        }
+        .refer:hover{
+            background-color: rgb(243, 239, 57);
+            color: white;
+            transition: 0.3s;
+        }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <h1>Sign up</h1>
+        <a href="login/login.html" target="_blank">
+    <button class ="refer">Login</button>
+  </a>
+        <p>Username</p>
+        <input class="textarea" type="text" id="username" placeholder="Enter username">
+        <p>Password</p>
+        <input class="textarea" type="password" id="password" placeholder="Enter password">
+        <button id="hn" onclick="signUpUser()">Sign up</button>
+        <div id="signup-message"></div>
+    </div>
+
+    <script>
+        //complex tasks me dekhna gpt-5 4 se better rhega. tmne suggestions off kr diye h? nhi to aa nhi rhe
+        //hn sara data clear aur v kuch krna h isme. Hn dekhne se utna complete nahi lg rha h. ek welcome msg v dalte h
+        function signUpUser() {
+            const username = document.getElementById("username").value.trim();
+            const password = document.getElementById("password").value.trim();
+            const messageDiv = document.getElementById("signup-message");
+
+            // Basic validation
+            if (!username || !password) {
+                showMessage("Please fill in both username and password!", "error");
+                return;
+            }
+
+            if (username.length < 3) {
+                showMessage("Username must be at least 3 characters!", "error");
+                return;
+            }
+
+            if (password.length < 4) {
+                showMessage("Password must be at least 4 characters!", "error");
+                return;
+            }
+
+            // Get existing users or create empty array
+            let users = JSON.parse(localStorage.getItem('lekhaniUsers')) || [];
+            
+            // Check if username already exists
+            const existingUser = users.find(user => user.username === username);
+            if (existingUser) {
+                showMessage("Username already exists! Please choose another.", "error");
+                return;
+            }
+
+            // Add new user
+            const newUser = {
+                username: username,
+                password: password, // Note: In real apps, never store plain passwords!
+                signupDate: new Date().toLocaleDateString()
+            };
+
+            users.push(newUser);
+            
+            // Save to localStorage
+            localStorage.setItem('lekhaniUsers', JSON.stringify(users));
+
+            // Clear form
+            document.getElementById("username").value = '';
+            document.getElementById("password").value = '';
+
+            showMessage("Sign up successful! You can now login with these credentials.", "success");
+            
+            // Update the demo user list
+            displayUsers();
+
+            // Optional: Redirect after successful signup
+            setTimeout(() => {
+                // window.location.href = "login.html"; // Uncomment when you have a login page
+            }, 2000);
+        }
+
+        // Function to display messages
+        function showMessage(text, type) {
+            const messageDiv = document.getElementById("signup-message");
+            messageDiv.textContent = text;
+            messageDiv.className = `message ${type}`;
+        }
+
+        // Function to display all registered users (for demo purposes)
+        function displayUsers() {
+            const users = JSON.parse(localStorage.getItem('lekhaniUsers')) || [];
+            const userListDiv = document.getElementById("user-list");
+            
+            if (users.length === 0) {
+                userListDiv.innerHTML = '<p style="color: #666;">No users registered yet.</p>';
+                return;
+            }
+
+            let html = '<h4>Registered Users:</h4>';
+            users.forEach((user, index) => {
+                html += `<div style="margin: 5px 0; padding: 5px; background: white; border-radius: 5px;">
+                    <strong>${user.username}</strong> | Password: ${user.password} | Joined: ${user.signupDate}
+                </div>`;
+            });
+            
+            userListDiv.innerHTML = html;
+        }
+
+        // Function to clear all users (for testing) 
+        function clearAllUsers() {
+            if (confirm('Are you sure you want to delete all users?')) {
+                localStorage.removeItem('lekhaniUsers');
+                displayUsers();
+                showMessage("All users cleared!", "success");
+            }
+        }
+
+        // Function you can use in your login page
+        function verifyLogin(enteredUsername, enteredPassword) {
+            const users = JSON.parse(localStorage.getItem('lekhaniUsers')) || [];
+            const user = users.find(u => u.username === enteredUsername && u.password === enteredPassword);//ye dekho check ho rha h, if object.username and password is same as user entered name and password.
+            return user ? true : false;
+        }
+
+        // Load and display users when page loads
+        window.onload = function() {
+            displayUsers();
+        }
+
+        // Demo: How to use the data in login page
+        console.log("To use in your login page, call:");
+        console.log("const users = JSON.parse(localStorage.getItem('lekhaniUsers')) || [];");
+        console.log("Then check if entered username/password matches any user in the array");
+
+       
+    </script>
+</body>
+</html>

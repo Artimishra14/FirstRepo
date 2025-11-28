@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Project Lekhani</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&display=swap');
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Orbitron', sans-serif;
+      background: linear-gradient(135deg, #ffb7ce, rgb(219, 18, 85), rgb(155, 16, 62));
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      min-height: 100vh;
+      padding: 20px;
+      color: #ffffff;
+    }
+
+    h1 { 
+      font-size: 2.5em;
+      margin-bottom: 20px;
+      text-shadow: 0 0 8px #ffb7ce;
+    }
+
+    /* Welcome Message Styles */
+    .welcome-section {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      background: rgba(255, 255, 255, 0.95);
+      padding: 15px 20px;
+      border-radius: 15px;
+      box-shadow: 0 0 15px rgba(219, 18, 85, 0.5);
+      color: rgb(219, 18, 85);
+      font-size: 16px;
+      font-weight: bold;
+      text-align: center;
+      min-width: 250px;
+      border: 2px solid #ffb7ce;
+      z-index: 10;
+    }
+
+    .welcome-user {
+      font-size: 18px;
+      margin-bottom: 8px;
+      text-shadow: 0 0 5px rgba(219, 18, 85, 0.3);
+    }
+
+    .logout-btn {
+      background: rgb(219, 18, 85);
+      color: white;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 8px;
+      font-size: 14px;
+      cursor: pointer;
+      margin-top: 8px;
+      transition: all 0.3s ease;
+    }
+
+    .logout-btn:hover {
+      background: rgb(132, 6, 48);
+      box-shadow: 0 0 10px rgba(219, 18, 85, 0.7);
+    }
+
+    .guest-message {
+      font-size: 14px;
+      color: rgb(132, 6, 48);
+    }
+
+    .container{
+      position:relative;
+      top:-100px;
+      background: #ffb7ce; /*is din ke bad ek v bar nahi khola?nhi oh god
+      kidhar h wo picture wala jo banayatha htaya diya maine tm bole koi kaam ka nhi h vo sb ht maine kab bola
+      maine bola tha kaam aa skta h us time kaam nhi tha,*/
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 0 20px #ffb7ce;
+      backdrop-filter: blur(10px);
+      border: 1px solid #ffb7ce4c;
+      max-width: 650px;
+      width: 100%;
+      text-align: center;
+    }
+
+    canvas {
+      border: 3px dashed rgb(219, 18, 85);
+      border-radius: 10px;
+      background-color: white;
+      margin-top: 10px;
+      margin-left:50px;
+      max-width: 500px;
+      width: 100%;
+      height: 200px;
+      display: block;
+    }
+
+    .buttons, .brush-size, .language-select {
+      margin-top: 20px;
+    }
+
+    button {
+      background: transparent;
+      color: rgb(219, 18, 85);
+      border: 2px solid rgb(132, 6, 48);;
+      padding: 12px 25px;
+      margin: 10px;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: bold;
+      transition: all 0.3s ease;
+      text-shadow: 0 0 5px rgb(244, 142, 176);
+    }
+
+    button:hover {
+      background-color: rgb(219, 18, 85);;
+      color: white;
+      box-shadow: 0 0 15px rgb(244, 142, 176);
+      cursor: pointer;
+    }
+
+    #output {
+      margin-top: 25px;
+      font-size: 20px;
+      color: rgb(219, 18, 85);
+      text-shadow: 0 0 10px rgb(244, 142, 176);
+      min-height: 30px;
+    }
+
+    .neon-border {
+      border: 1px solid rgb(219, 18, 85);;
+      box-shadow: 0 0 10px rgb(219, 18, 85), 0 0 30px rgb(219, 18, 85) inset;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 14px;
+      display: inline-block;
+      margin-bottom: 15px;
+    }
+
+    input[type=range] {
+      -webkit-appearance: none;
+      width: 60%;
+      background: transparent;
+    }
+
+    input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      height: 20px;
+      width: 20px;
+      background: rgb(219, 18, 85);
+      border-radius: 50%;
+      cursor: pointer;
+      margin-top: -8px;
+      box-shadow: 0 0 5px #ffb7ce;
+    }
+
+    input[type=range]::-webkit-slider-runnable-track {
+      height: 4px;
+      background: rgb(219, 18, 85);
+      border-radius: 2px;
+    }
+
+    .brush-size label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 14px;
+      color: rgb(219, 18, 85);
+      text-shadow: 0 0 5px #ffb7ce;
+    }
+
+    .brush-value {
+      margin-top: 5px;
+      font-size: 16px;
+      color: rgb(219, 18, 85);
+      text-shadow: 0 0 5px #ffb7ce;
+    }
+
+    .language-select label {
+      font-size: 14px;
+      color: rgb(219, 18, 85);
+      text-shadow: 0 0 5px #ffb7ce;
+    }
+
+    .language-select select {
+      padding: 6px 10px;
+      font-size: 14px;
+      border-radius: 6px;
+      background: white;
+      color: rgb(219, 18, 85);
+      border: 1px solid #ffb7ce; 
+      box-shadow: 0 0 5px #f4a9c155;
+      margin-top: 5px;
+    }
+    .hn{
+      position: relative;
+      right: -600px;
+      background-color: white;
+      height: 50px;
+      width: 150px;
+    }
+    .hn:hover{
+      background-color: rgb(243, 236, 18);
+      color: white;
+      transition: 0.3s;
+      cursor: pointer;
+    }
+
+    /* Hide login/signup buttons when user is logged in */
+    .auth-buttons.hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <!-- Welcome Section -->
+  <div id="welcomeSection" class="welcome-section">
+    <div id="welcomeContent">
+      <!-- This will be populated by JavaScript -->
+    </div>
+  </div>
+
+  <h1>🖋️ LEKHANI </h1>
+  
+  <!-- Login/Signup buttons (hidden when logged in) -->
+  <div id="authButtons" class="auth-buttons">
+    <a href="login/login.html?redirect=../index.html">
+  <button class="hn">Login</button>
+</a>
+    <a href="signup.html" target="_blank">
+      <button class ="hn">Sign Up</button>
+    </a>
+  </div>
+  
+  <button class="hn" onclick="launch()">About us</button>
+  
+  <div class="container">
+    <div class="neon-border">Draw anything — characters, letters, numbers!</div>
+
+    <div class="language-select">
+      <label for="languageDropdown">🌍 Choose Language</label><br>
+      <select id="languageDropdown">
+        <option value="en" selected>English</option>
+        <option value="hi">Hindi (हिन्दी)</option>
+        <option value="bn">Bengali (বাংলা)</option>
+        <option value="ta">Tamil (தமிழ்)</option>
+        <option value="te">Telugu (తెలుగు)</option>
+        <option value="kn">Kannada (ಕನ್ನಡ)</option>
+        <option value="ml">Malayalam (മലയാളം)</option>
+        <option value="gu">Gujarati (ગુજરાતી)</option>
+        <option value="mr">Marathi (मराठी)</option>
+        <option value="zh_TW">Chinese (繁體中文)</option>
+        <option value="ja">Japanese (日本語)</option>
+        <option value="ar">Arabic (العربية)</option>
+      </select>
+    </div>
+
+    <canvas id="myCanvas"></canvas>
+
+    <div class="brush-size">
+      <label for="brushSlider">🖌️ Brush Size</label>
+      <input type="range" id="brushSlider" min="1" max="15" value="5" />
+      <div class="brush-value">Size: <span id="brushValue">5</span> px</div>
+    </div>
+
+    <div class="buttons">
+      <button onclick="recognize()">Recognize</button>
+      <button onclick="clearCanvas()">Clear</button>
+    </div>
+
+    <div id="output">Waiting for your magic stroke...</div>
+  </div>
+
+  <script src="handwriting.js"></script>
+  <script src="handwriting.canvas.js"></script>
+  <script>
+    // Check if user is logged in and show welcome message
+    function checkLoginStatus() {
+      const currentUser = localStorage.getItem('lekhaniCurrentUser');
+      const welcomeContent = document.getElementById('welcomeContent');
+      const authButtons = document.getElementById('authButtons');
+      
+      if (currentUser) {
+        // User is logged in - show welcome message
+        const userData = JSON.parse(currentUser);
+        welcomeContent.innerHTML = `
+          <div class="welcome-user">Welcome back, ${userData.username}! 👋</div>
+          <div style="font-size: 12px; color: rgb(132, 6, 48);">
+            Member since: ${userData.signupDate || 'Recently'}
+          </div>
+          <button class="logout-btn" onclick="logout()">Logout</button>
+        `;
+        
+        // Hide login/signup buttons
+        authButtons.classList.add('hidden');
+      } else {
+        // User is not logged in - show guest message
+        welcomeContent.innerHTML = `
+          <div class="guest-message">
+            Welcome to LEKHANI! 🎨<br>
+            <small>Login to save your progress</small>
+          </div>
+        `;
+        authButtons.classList.remove('hidden');
+      }
+    }
+
+    // Logout function
+    function logout() {
+      if (confirm('Are you sure you want to logout?')) {
+        localStorage.removeItem('lekhaniCurrentUser');
+        alert('Logged out successfully!');
+        location.reload(); // Refresh page to update UI
+      }
+    }
+
+    // Call checkLoginStatus when page loads
+    // btao to ye kya krne bol rha h kya pta idhar se padh ke btao n upar se kyun ym mera test le rhe ho na nhi mujhe smj nhi aa rha sachme are tmko nhi aa rha h mujhe kaha se aa jaeja kyu mai bhagwan thodi hu. eekbar read krke jo smj aa rha h btao maybe usse mujhe kuch idea mil jaye login ke jis page pe wapas bhejna chahte ho uska url query parameter use krna h acha, kaha pe same page me ya dono jaha wapas bhejna h usme??dono sayad
+    window.onload = function() {
+      checkLoginStatus();
+      resizeCanvas();
+    };
+
+    const canvasElement = document.getElementById("myCanvas");
+    const brushSlider = document.getElementById("brushSlider");
+    const brushValueDisplay = document.getElementById("brushValue");
+    const languageDropdown = document.getElementById("languageDropdown");
+    
+    function launch() {
+      setTimeout(() => {
+        window.location.href = "./login/aboutUs.html";
+      }, 1000);
+    }
+
+    function resizeCanvas() {
+      // Set canvas width to match its parent container
+      const parentWidth = canvasElement.parentElement.offsetWidth;
+      canvasElement.width = parentWidth > 500 ? 500 : parentWidth;
+      canvasElement.height = 200;
+    }
+
+    // Initialize handwriting canvas after resizing
+    resizeCanvas();
+    const canvas = new handwriting.Canvas(canvasElement, parseInt(brushSlider.value));
+    canvas.setLineWidth(parseInt(brushSlider.value));
+    canvas.cxt.strokeStyle = "rgb(0, 0, 0)";
+    canvas.cxt.shadowColor = "rgb(0, 0, 0)";
+    canvas.cxt.shadowBlur = 0;
+
+    let currentLanguage = languageDropdown.value;
+
+    canvas.setOptions({
+      language: currentLanguage,
+      numOfReturn: 3
+    });
+
+    canvas.setCallBack(function(results, err) { 
+      const output = document.getElementById("output");
+      if (err) {
+        output.innerHTML = "❌ Error: " + err.message;
+      } else {
+        output.innerHTML = "✅ Prediction: <b>" + results.join(", ") + "</b>";
+      }
+    });
+
+    function recognize() {
+      canvas.recognize();
+    }
+
+    function clearCanvas() {
+      // Always resize before clearing to ensure full area is cleared thik kaise hua
+      // canvas ka size html me kuch aur aur js me kuch aur tha
+      // dono ko same krne ke liye function ko same size diye aur turant page ka starting me he call kr diye
+      // ise size same ho gya js aur page dono me to ab fully clear ho rha h
+      // pehle sirf half size ka data tah js me isliye sirf utna he clear kr rha tha
+      // 
+      resizeCanvas();
+      canvas.erase();
+      document.getElementById("output").textContent = "Canvas cleared.";
+    }
+
+    brushSlider.addEventListener("input", () => {
+      const size = parseInt(brushSlider.value);
+      brushValueDisplay.textContent = size;
+      canvas.setLineWidth(size);
+    });
+
+    languageDropdown.addEventListener("change", () => {
+      currentLanguage = languageDropdown.value;
+      canvas.setOptions({
+        language: currentLanguage,
+        numOfReturn: 3
+      });
+    });
+
+    window.addEventListener("resize", () => {
+      resizeCanvas();
+      canvas.erase();
+    });
+  </script>
+</body>
+</html>

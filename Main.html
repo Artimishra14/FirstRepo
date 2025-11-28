@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LEKHANI</title>
+  <style>
+    body {
+      font-family: 'Orbitron', sans-serif;
+      background: linear-gradient(135deg, #ffb7ce, rgb(219, 18, 85), rgb(155, 16, 62));
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      color: #ffffff;
+    }
+
+    .heading {
+      background-color: white;
+      width: 100%;
+      text-align: center;
+      padding: 20px 0;
+    }
+
+    .heading h1 {
+      margin: 0;
+      font-size: 50px;
+      color: rgb(219, 18, 85);
+    }
+
+    .decider {
+      font-size: 24px;
+      margin: 30px 0;
+      text-align: center;
+    }
+
+    .options {
+      display: flex;
+      gap: 60px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .option {
+      position: relative;
+      width: 350px;
+      height: 350px;
+      border: 2px solid white;
+      border-radius: 20px;
+      cursor: pointer;
+      overflow: hidden;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+      transition: transform 0.3s ease-in-out;
+    }
+
+    .option:hover {
+      transform: scale(1.1);
+    }
+
+    .bg {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-size: cover;
+      background-position: center;
+      filter: brightness(0.8);
+      transition: filter 0.3s ease-in-out;
+      pointer-events: none;
+    }
+
+    .option:hover .bg {
+      filter: blur(5px);
+    }
+
+    .label {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 32px;
+      font-weight: bold;
+      color: white;
+      text-shadow: 2px 2px 6px rgba(0,0,0,0.8);
+      z-index: 1;
+    }
+    .login-btn {
+      background-color: white;
+      color: rgb(219, 18, 85);
+      border: 2px solid rgb(132, 6, 48);
+      padding: 12px 25px;
+      margin: 10px;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: bold;
+      transition: all 0.3s ease;
+      text-shadow: 0 0 5px rgb(244, 142, 176);
+    }
+    .login-btn:hover{
+        cursor: pointer;
+        background-color: rgb(219, 18, 85);
+        color: white;
+    }
+    .signup-btn {
+      background-color: white;
+      color: rgb(219, 18, 85);
+      border: 2px solid rgb(132, 6, 48);
+      padding: 12px 25px;
+      margin: 10px;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: bold;
+      transition: all 0.3s ease;
+      text-shadow: 0 0 5px rgb(244, 142, 176);
+    }
+    .signup-btn:hover{
+        cursor: pointer;
+        background-color: rgb(219, 18, 85);
+        color: white;
+    }
+    .btn-row {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      margin-top: 30px;
+    }
+  </style>
+</head>
+<body>
+  <div class="heading">
+    <h1>LEKHANI</h1>
+  </div>
+
+  <div class="decider">
+    Choose either <b>Draw</b> or <b>Upload Image</b> for Recognition
+  </div>
+
+  <div class="options">
+    <!-- Upload option -->
+    <div class="option" onclick="toUploadPage()">
+      <div class="bg" style="background-image: url('3d-upload-file-drag-drop-sign-upload-file-document-concept-trendy-modern-vector-3d-style_839035-1745414.avif');"></div>
+      <div class="label">UPLOAD</div>
+    </div>
+
+    <!-- Draw option -->
+    <div class="option" onclick="toDrawPage()">
+      <div class="bg" style="background-image: url('IMG_7696.jpg');"></div>
+      <div class="label">DRAW</div>
+    </div>
+  </div>
+  <div class="btn-row">
+    <button class="login-btn" onclick="toLogin()">Login</button>
+    <button class="signup-btn" onclick="toSignup()">Sign Up</button>
+  </div>
+
+  <script>
+    // ab ekbar full use krna choose file wala nhi ho rha h model nhi h na. gpt open kro
+    
+    function toDrawPage() {
+      window.location.href = "./index.html";
+    }
+    function toLogin() {
+      window.location.href = "./login/login.html?redirect=../Main.html";
+    }
+    function toSignup() {
+      window.location.href = "./signup.html";
+    }
+    function toUploadPage() {
+      window.location.href = "./uploadPage/upload.html";
+    }
+    //pta h problem kaha thi nhi
+    // everything was working and correct
+    // mai bs go live pe click krne bhul gya tha oops :(
+    //aise he ek login ka button add krna is page me  bhkk mai nhi kr rhi h kl kre h ab chota sa kam h bs ye jagah
+    //kro to bs ek button he to add krna h mai bataunga nhi hua to button kaha gya?kya pta
+    //buddhu script ke andar button bana diya tmne hehe script ke andar ssirf js ka syntax hota h
+    //baki ka kal krte h apna wo upload page jo h usko v decorate kr lena thoda 
+    //khana kha liya ?hn
+    //wo kr logi na nhi kyu 
+    
+  </script>
+</body>
+</html>
